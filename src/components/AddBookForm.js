@@ -1,7 +1,7 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../components/Loading";
+import axios from "axios";
+import Loading from "./Loading";
 
 const AddBookForm = () => {
   const navigate = useNavigate();
@@ -10,6 +10,7 @@ const AddBookForm = () => {
   const [authorName, setAuthorName] = useState("");
   const [isbn, setIsbn] = useState("");
   const [category, setCategory] = useState("");
+
   useEffect(() => {
     axios
       .get("http://localhost:3004/categories")
@@ -36,49 +37,54 @@ const AddBookForm = () => {
     axios
       .post("http://localhost:3004/books", newBook)
       .then(
-        (res) => setBookName(""),
+        (res) => navigate("/"),
+        setBookName(""),
         setAuthorName(""),
         setIsbn(""),
-        setCategory(""),
-        navigate("/")
+        setCategory("")
       )
       .catch((err) => console.log(err));
   };
   if (categories === null) {
     return <Loading />;
   }
-
   return (
-    <div className="container">
+    <div className="container my-5 ">
       <form onSubmit={handleSubmit}>
-        <div className="row g-3 my-5">
-          <div className="col ">
+        <div className="row ">
+          <div className="col">
             <input
               type="text"
               className="form-control"
-              placeholder="Book Name"
+              placeholder="Book name"
               value={bookName}
-              onChange={(event) => setBookName(event.target.value)}
+              onChange={(event) => {
+                setBookName(event.target.value);
+              }}
             />
           </div>
           <div className="col">
             <input
               type="text"
               className="form-control"
-              placeholder="Author Name"
+              placeholder="Author name"
               value={authorName}
-              onChange={(event) => setAuthorName(event.target.value)}
+              onChange={(event) => {
+                setAuthorName(event.target.value);
+              }}
             />
           </div>
         </div>
-        <div className="row g-3">
+        <div className="row  my-3">
           <div className="col">
             <input
               type="text"
               className="form-control"
               placeholder="ISBN"
               value={isbn}
-              onChange={(event) => setIsbn(event.target.value)}
+              onChange={(event) => {
+                setIsbn(event.target.value);
+              }}
             />
           </div>
           <div className="col">
@@ -94,8 +100,8 @@ const AddBookForm = () => {
             </select>
           </div>
         </div>
-        <div className="d-flex justify-content-center my-5">
-          <button className="btn btn-outline-primary w-25" type="submit">
+        <div className="d-flex justify-content-center">
+          <button className="btn btn-outline-primary col-3" type="submit">
             Save
           </button>
         </div>
