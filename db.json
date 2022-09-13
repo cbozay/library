@@ -1,30 +1,9 @@
 {
   "books": [
     {
-      "id": 1564785556321,
-      "name": "Yaban",
-      "author": "Yakup Kadri Karaosmanoğlu",
-      "isbn": 11111111111,
-      "categoryId": "1"
-    },
-    {
-      "id": 1254569663214,
-      "name": "Lolita",
-      "author": "Vladimir Nabokov",
-      "isbn": "11111111112",
-      "categoryId": "3"
-    },
-    {
-      "id": 1662915555920,
-      "name": "yukjyuj",
-      "author": "tujtuj",
-      "isbn": "",
-      "categoryId": "1"
-    },
-    {
-      "id": 1662915923301,
-      "name": "sfsf",
-      "author": "sddfsf",
+      "id": 1663091745521,
+      "name": "sadasxadvdf",
+      "author": "asdcadx",
       "isbn": "",
       "categoryId": "2"
     }

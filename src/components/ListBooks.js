@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
+import Modal from "./Modal";
 
 const ListBooks = () => {
   const [books, setBooks] = useState(null);
   const [categories, setCategories] = useState(null);
   const [didDelete, setDidDelete] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [deletedBook, setDeletedBook] = useState("");
 
   useEffect(() => {
     axios
@@ -28,7 +31,10 @@ const ListBooks = () => {
   const bookDelete = (id) => {
     axios
       .delete(`http://localhost:3004/books/${id}`)
-      .then((res) => setDidDelete(!didDelete))
+      .then((res) => {
+        setDidDelete(!didDelete);
+        setShowModal(false);
+      })
       .catch((err) => console.log(err));
   };
   if (books === null || categories === null) {
@@ -67,7 +73,7 @@ const ListBooks = () => {
               (cat) => cat.id === book.categoryId
             );
             return (
-              <tr>
+              <tr key={book.id}>
                 <td>{book.id}</td>
                 <td>{book.name}</td>
                 <td>{book.author}</td>
@@ -83,17 +89,33 @@ const ListBooks = () => {
                     type="button"
                     className="btn btn-sm btn-outline-danger"
                     onClick={() => {
-                      bookDelete(book.id);
+                      setDeletedBook(book.id);
+                      setShowModal(true);
                     }}
                   >
                     DELETE
                   </button>
+                  <Link
+                    type="button"
+                    className="btn btn-sm btn-outline-secondary"
+                    to={`/edit-book/${book.id}`}
+                  >
+                    EDIT
+                  </Link>
                 </div>
               </tr>
             );
           })}
         </tbody>
       </table>
+      {showModal === true && (
+        <Modal
+          title={"Removing Process"}
+          detail={"Are you sure to remove?"}
+          onCancel={() => setShowModal(false)}
+          onConfirm={() => bookDelete(deletedBook)}
+        />
+      )}
     </div>
   );
 };
