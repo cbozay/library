@@ -16,6 +16,7 @@ const Modal = (props) => {
         width: "100%",
         height: "100vh",
         cursor: "default",
+        zIndex: "1",
       }}
       onClick={onCancel}
     >
@@ -27,7 +28,7 @@ const Modal = (props) => {
         }}
       >
         <h1>{title}</h1>
-        <p className="text-center">{detail}</p>
+        <h4 className="text-center">{detail}</h4>
         <div className="d-flex justify-content-center">
           <button
             className="btn mx-1 btn-sm btn-outline-danger"

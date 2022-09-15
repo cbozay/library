@@ -3,13 +3,17 @@ import axios from "axios";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
+import { useSelector } from "react-redux";
 
 const ListBooks = () => {
+  const generalAppState = useSelector((state) => state);
+  console.log(generalAppState);
   const [books, setBooks] = useState(null);
   const [categories, setCategories] = useState(null);
   const [didDelete, setDidDelete] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState("");
+  const [willRemovingBook, setWillRemovingBook] = useState("");
 
   useEffect(() => {
     axios
@@ -91,6 +95,7 @@ const ListBooks = () => {
                     onClick={() => {
                       setDeletedBook(book.id);
                       setShowModal(true);
+                      setWillRemovingBook(book.name);
                     }}
                   >
                     DELETE
@@ -110,8 +115,8 @@ const ListBooks = () => {
       </table>
       {showModal === true && (
         <Modal
-          title={"Removing Process"}
-          detail={"Are you sure to remove?"}
+          title={"Deleting Process..."}
+          detail={`Are you sure to remove the book named "${willRemovingBook}"?`}
           onCancel={() => setShowModal(false)}
           onConfirm={() => bookDelete(deletedBook)}
         />
