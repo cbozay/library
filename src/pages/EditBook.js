@@ -3,8 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import Header from "../components/Header";
+import { useDispatch, useSelector } from "react-redux";
 
 const EditBook = () => {
+  const dispatch = useDispatch();
+  const { categoriesState, booksState } = useSelector((state) => state);
   const params = useParams();
   const navigate = useNavigate();
   const [bookName, setBookName] = useState("");
@@ -13,20 +16,32 @@ const EditBook = () => {
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState(null);
   useEffect(() => {
-    axios
-      .get(`http://localhost:3004/books/${params.bookId}`)
-      .then((res) => {
-        console.log(res.data);
-        setBookName(res.data.name);
-        setAuthorName(res.data.author);
-        setIsbn(res.data.isbn);
-        setCategory(res.data.categoryId);
-        axios
-          .get("http://localhost:3004/categories")
-          .then((res) => setCategories(res.data))
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
+    const searchedBook = booksState.books.find(
+      (item) => item.id == params.bookId
+    );
+    if (searchedBook === undefined) {
+      navigate("/");
+      return;
+    }
+    console.log(searchedBook);
+    setBookName(searchedBook.name);
+    setAuthorName(searchedBook.author);
+    setIsbn(searchedBook.isbn);
+    setCategory(searchedBook.categoryId);
+    // axios
+    //   .get(`http://localhost:3004/books/${params.bookId}`)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setBookName(res.data.name);
+    //     setAuthorName(res.data.author);
+    //     setIsbn(res.data.isbn);
+    //     setCategory(res.data.categoryId);
+    //     axios
+    //       .get("http://localhost:3004/categories")
+    //       .then((res) => setCategories(res.data))
+    //       .catch((err) => console.log(err));
+    //   })
+    //   .catch((err) => console.log(err));
   }, []);
 
   const handleSubmit = (event) => {
@@ -44,12 +59,14 @@ const EditBook = () => {
     axios
       .put(`http://localhost:3004/books/${params.bookId}`, updatedBook)
       .then((res) => {
+        dispatch({ type: "EDIT_BOOK", payload: updatedBook });
+
         console.log(res.data);
         navigate("/");
       })
       .catch((err) => console.log(err));
   };
-  if (categories === null) {
+  if (categoriesState.success !== true || booksState.success !== true) {
     return <Loading />;
   }
   return (
@@ -99,7 +116,7 @@ const EditBook = () => {
               onChange={(event) => setCategory(event.target.value)}
             >
               <option value={""}>Select a Category</option>
-              {categories.map((category) => {
+              {categoriesState.categories.map((category) => {
                 return (
                   <option key={category.id} value={category.id}>
                     {category.name}

@@ -3,45 +3,45 @@ import axios from "axios";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ListBooks = () => {
-  const generalAppState = useSelector((state) => state);
-  console.log(generalAppState);
-  const [books, setBooks] = useState(null);
-  const [categories, setCategories] = useState(null);
+  const { booksState, categoriesState } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  // const [books, setBooks] = useState(null);
+  // const [categories, setCategories] = useState(null);
   const [didDelete, setDidDelete] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [deletedBook, setDeletedBook] = useState("");
   const [willRemovingBook, setWillRemovingBook] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3004/books")
-      .then((resb) => {
-        console.log(resb);
-
-        setBooks(resb.data);
-
-        axios
-          .get("http://localhost:3004/categories")
-          .then((resc) => {
-            setCategories(resc.data);
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .get("http://localhost:3004/books")
+    //   .then((resb) => {
+    //     console.log(resb);
+    //     setBooks(resb.data);
+    //     axios
+    //       .get("http://localhost:3004/categories")
+    //       .then((resc) => {
+    //         setCategories(resc.data);
+    //       })
+    //       .catch((err) => console.log(err));
+    //   })
+    //   .catch((err) => console.log(err));
   }, [didDelete]);
   const bookDelete = (id) => {
     axios
       .delete(`http://localhost:3004/books/${id}`)
       .then((res) => {
+        console.log(res);
+        dispatch({ type: "DELETE_BOOK", payload: id });
         setDidDelete(!didDelete);
         setShowModal(false);
       })
       .catch((err) => console.log(err));
   };
-  if (books === null || categories === null) {
+  if (booksState.success !== true || categoriesState.success !== true) {
     return (
       <div className="my-5">
         <Loading />
@@ -72,8 +72,8 @@ const ListBooks = () => {
         </thead>
 
         <tbody>
-          {books.map((book) => {
-            const category = categories.find(
+          {booksState.books.map((book) => {
+            const category = categoriesState.categories.find(
               (cat) => cat.id === book.categoryId
             );
             return (
@@ -85,6 +85,7 @@ const ListBooks = () => {
                 <td className="text-center">
                   {book.isbn === "" ? "-" : book.isbn}
                 </td>
+
                 <div
                   className="btn-group d-flex justify-content-center"
                   role="group"

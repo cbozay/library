@@ -2,22 +2,25 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "./Loading";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddBookForm = () => {
+  const dispatch = useDispatch();
+  const { categoriesState } = useSelector((state) => state);
   const navigate = useNavigate();
-  const [categories, setCategories] = useState(null);
+  // const [categories, setCategories] = useState(null);
   const [bookName, setBookName] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [isbn, setIsbn] = useState("");
   const [category, setCategory] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3004/categories")
-      .then((res) => {
-        setCategories(res.data);
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .get("http://localhost:3004/categories")
+    //   .then((res) => {
+    //     setCategories(res.data);
+    //   })
+    //   .catch((err) => console.log(err));
   }, []);
 
   const handleSubmit = (event) => {
@@ -37,7 +40,8 @@ const AddBookForm = () => {
     axios
       .post("http://localhost:3004/books", newBook)
       .then(
-        (res) => navigate("/"),
+        (res) => dispatch({ type: "EDIT_BOOK", payload: newBook }),
+        navigate("/"),
         setBookName(""),
         setAuthorName(""),
         setIsbn(""),
@@ -45,7 +49,7 @@ const AddBookForm = () => {
       )
       .catch((err) => console.log(err));
   };
-  if (categories === null) {
+  if (categoriesState.success !== true) {
     return <Loading />;
   }
   return (
@@ -94,8 +98,12 @@ const AddBookForm = () => {
               onChange={(event) => setCategory(event.target.value)}
             >
               <option value={""}>Select a Category</option>
-              {categories.map((category) => {
-                return <option value={category.id}>{category.name}</option>;
+              {categoriesState.categories.map((category) => {
+                return (
+                  <option value={category.id} key={category.id}>
+                    {category.name}
+                  </option>
+                );
               })}
             </select>
           </div>
