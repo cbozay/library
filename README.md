@@ -1,5 +1,14 @@
 # Getting Started with Create React App
 
+<hr>
+![](library.gif)
+<hr>
+
+<h1>What is it about?
+<h6>A personal library has been provided according to anybody will. The entered datas can be edited and deleted.
+<h3>How is it made?
+<h6>Firstly all needed components have been created. After that, it has been pulled data from a fake API. The data adding, editing and deleting process have been activated. Then, through React Router which has special skilled function we have an easy web-surfing among pages! Finally, with help of integrated redux, we don't always have to pull data from API as any changing process on datas has been made. We just pull datas from the main app so we can use this revolution over all website...
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
