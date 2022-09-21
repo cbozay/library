@@ -1,37 +1,16 @@
 {
   "books": [
     {
-      "id": 1663700616292,
-      "name": "rhfgb",
-      "author": "fgngf",
+      "id": 1663773111933,
+      "name": "Lolita",
+      "author": "Vladimir Nabokov",
       "isbn": "",
       "categoryId": "1"
     },
     {
-      "id": 1663700636085,
-      "name": "dgfbd",
-      "author": "dgbd",
-      "isbn": "",
-      "categoryId": "2"
-    },
-    {
-      "id": 1663701238226,
-      "name": "fvsfcv",
-      "author": "sfvc",
-      "isbn": "",
-      "categoryId": "3"
-    },
-    {
-      "id": 1663701244465,
-      "name": "edcfsc",
-      "author": "sdcsfc",
-      "isbn": "",
-      "categoryId": "1"
-    },
-    {
-      "id": 1663702214368,
-      "name": "sgukg",
-      "author": "sdcdwrfwgkfyr",
+      "id": 1663773150581,
+      "name": "Kayıp Zamanın İzinde",
+      "author": "Marcel Proust",
       "isbn": "",
       "categoryId": "1"
     }
